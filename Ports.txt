@@ -1,5 +1,27 @@
- AuthServer ->  https://localhost:5001
- Client1 => https://localhost:5006
- Client2 => https://localhost:5011;
-  API1 => https://localhost:5016;
-  API1 => https://localhost:5021;
+﻿ AuthServer ->  https://localhost:5000;
+ Client1 => https://localhost:5005;
+ Client2 => https://localhost:5010;
+  API1 => https://localhost:5015;
+  API1 => https://localhost:5020;
+
+**************************************************************************
+OpenId Connect = kullanıcı adı login işlemi (kimlik) Authentication
+OAuth 2.0 = kullanıcı dönüş bilgileri (yetkileri) Authorization
+
+Resource Server=Bizim Apiler
+Resource Owner=Son kullanıcı
+Client=web projeleri (Angula, React vs..)
+
+Client-Id=Sitenin kullanıcı adı
+Cilent-Secret=Sitenin kullanıcı şifresi
+
+İzin Tipleri
+en önemlisi**Client credentials grant=site identityden token istiyor. bu user ile ilgili değil. Siteyle ilgili. Siteye için token ver.
+Client credentials--- ApiResource= hangi API lerle sorumlu olduğu.API leri tanıtıyor
+Client credentials--- ApiScope=Yetki alanına sahip(okuma izni vs...)
+Documan adresi :
+https://identityserver4.readthedocs.io/en/latest/
+
+**************************************************************************
+
+1 AuthServer den ilk Config.cs ile başladık.

@@ -11,16 +11,17 @@ namespace UdemyIdentityServer.AuthServer
 {
     public static class Config
     {
-        public static IEnumerable<ApiResource> GetApiResources()
+        //packet yöneticisinden IdentityServer4 yükle.
+        public static IEnumerable<ApiResource> GetApiResources()//ApiResource identityserver tanıyor
         {
-            return new List<ApiResource>()
+            return new List<ApiResource>()//1.API yi tanımlıyoruz.
             {
-                new ApiResource("resource_api1"){
-                    Scopes={ "api1.read","api1.write","api1.update" },
+                new ApiResource("resource_api1"){//ismini biz verdik
+                    Scopes={ "api1.read","api1.write","api1.update" },//tanımlanmış yetkileri atıyoruz (oku,yazma,güncelleme)
                     ApiSecrets = new []{new  Secret("secretapi1".Sha256())
                     }
                 },
-                new ApiResource("resource_api2")
+                new ApiResource("resource_api2")//2.API yi tanımlıyoruz
                 {
                        Scopes={ "api2.read","api2.write","api2.update" },
                           ApiSecrets = new []{new  Secret("secretapi2".Sha256()) }
@@ -28,16 +29,17 @@ namespace UdemyIdentityServer.AuthServer
             };
         }
 
-        public static IEnumerable<ApiScope> GetApiScopes()
+        public static IEnumerable<ApiScope> GetApiScopes()//Yetkilerin tanımlandığı yer
         {
             return new List<ApiScope>()
             {
-                new ApiScope("api1.read","API 1 için okuma izni"),
-                  new ApiScope("api1.write","API 1 için yazma izni"),
-                    new ApiScope("api1.update","API 1 için güncelleme izni"),
-                       new ApiScope("api2.read","API 2 için okuma izni"),
-                  new ApiScope("api2.write","API 2 için yazma izni"),
-                    new ApiScope("api2.update","API 2 için güncelleme izni"),
+                new ApiScope("api1.read","API 1 için okuma izni"),//API 1 için okuma izni verdik.
+                new ApiScope("api1.write","API 1 için yazma izni"),
+                new ApiScope("api1.update","API 1 için güncelleme izni"),
+
+                new ApiScope("api2.read","API 2 için okuma izni"),
+                new ApiScope("api2.write","API 2 için yazma izni"),
+                new ApiScope("api2.update","API 2 için güncelleme izni"),
             };
         }
 
@@ -74,30 +76,30 @@ namespace UdemyIdentityServer.AuthServer
             };
         }
 
-        public static IEnumerable<Client> GetClients()
+        public static IEnumerable<Client> GetClients()//Yukarıdaki API lere hangi clientler kullanacak 15 ve 32. satırlardan bahsediyorum
         {
-            return new List<Client>(){
+            return new List<Client>(){//Client = identityserver üzerinden geliyor.
                 new Client()
                 {
-                    ClientId = "Client1",
-                    ClientName="Client 1 app uygulaması",
-                   ClientSecrets=new[] {new Secret("secret".Sha256())},
-                   AllowedGrantTypes= GrantTypes.ClientCredentials,
-                   AllowedScopes= {"api1.read"}
+                   ClientId = "Client1",//sitenin ClientId si olacak bunu kullanıcının username gibi düşünebilirsin
+                   ClientName="Client 1 app uygulaması",//kullanıcının API den data almak için işimize yarayacak.
+                   ClientSecrets=new[] {new Secret("secret".Sha256())},//şifre secret olarak belirledik. ve bunu şifreledik.yani hash ledik.datayı appsettings den almak daha doğru olur.
+                   AllowedGrantTypes= GrantTypes.ClientCredentials,//ClientCredentials= bu akışa uygun token verecek. Akış tipini seçtik.bir çok tipler var. Ençok kullanılan bu tipdir.
+                   AllowedScopes= {"api1.read"}//Hangi API ye erişmek isteyeceğimizi belirliyoruz. 
                 },
                  new Client()
                 {
-                    ClientId = "Client2",
-                    ClientName="Client 2 app uygulaması",
+                   ClientId = "Client2",
+                   ClientName="Client 2 app uygulaması",
                    ClientSecrets=new[] {new Secret("secret".Sha256())},
                    AllowedGrantTypes= GrantTypes.ClientCredentials,
                    AllowedScopes= {"api1.read" ,"api1.update","api2.write","api2.update"}
                 },
                  new Client()
                  {
-                     ClientId = "Client1-Mvc",
-                     RequirePkce=false,
-                    ClientName="Client 1 app  mvc uygulaması",
+                   ClientId = "Client1-Mvc",
+                   RequirePkce=false,
+                   ClientName="Client 1 app  mvc uygulaması",
                    ClientSecrets=new[] {new Secret("secret".Sha256())},
                    AllowedGrantTypes= GrantTypes.Hybrid,
                    RedirectUris=new  List<string>{ "https://localhost:5006/signin-oidc" },
@@ -114,9 +116,9 @@ namespace UdemyIdentityServer.AuthServer
 
                   new Client()
                  {
-                     ClientId = "Client2-Mvc",
-                     RequirePkce=false,
-                    ClientName="Client 2 app  mvc uygulaması",
+                   ClientId = "Client2-Mvc",
+                   RequirePkce=false,
+                   ClientName="Client 2 app  mvc uygulaması",
                    ClientSecrets=new[] {new Secret("secret".Sha256())},
                    AllowedGrantTypes= GrantTypes.Hybrid,
                    RedirectUris=new  List<string>{ "https://localhost:5011/signin-oidc" },
@@ -133,4 +135,5 @@ namespace UdemyIdentityServer.AuthServer
     };
         }
     }
+    //BURDA TANIMLAMALARI YAPTIKTAN SONRA STARTUP A GEÇ 
 }

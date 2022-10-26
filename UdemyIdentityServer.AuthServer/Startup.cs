@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,21 +20,22 @@ namespace UdemyIdentityServer.AuthServer
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+
         public void ConfigureServices(IServiceCollection services)
         {
+            //Identity servis kuruyoruz.
             services.AddIdentityServer()
-                .AddInMemoryApiResources(Config.GetApiResources())
-                .AddInMemoryApiScopes(Config.GetApiScopes())
-                .AddInMemoryClients(Config.GetClients())
-                .AddInMemoryIdentityResources(Config.GetIdentityResources())
+                .AddInMemoryApiResources(Config.GetApiResources())//identity den memory servislerin şunlar.Yani memoryden ver veritabaından verme
+                .AddInMemoryApiScopes(Config.GetApiScopes())//confi den scope ları getir.
+                .AddInMemoryClients(Config.GetClients())//get clientleride aldık. config.cs den
+                .AddInMemoryIdentityResources(Config.GetIdentityResources())//IDENTITY SERVER ASIMETRIK ŞIFRELEME KULLANIR...Simetrik Şifreleme=hem tokeni doğrulamak hemde tokeni imzalama işlemi Asimterik Şifreleme=Private ve Public key olur. Private tutulur public key şifreyi kim çözecekse onla paylaşılır ve public key sahip olan kişi private keyi doğrulayabilir.
                 .AddTestUsers(Config.GetUsers().ToList())
-                .AddDeveloperSigningCredential();
+                .AddDeveloperSigningCredential();//Public ve Private key oluşturur.private elinde tutar publici app lere dağıtacak. ve app den geldiğinde elindeki public ile karşılaştıracak ve ona göre kapıları açacak veya kapatacak.
 
             services.AddControllersWithViews();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -43,15 +44,14 @@ namespace UdemyIdentityServer.AuthServer
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseExceptionHandler("/Home/Error");                
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseIdentityServer();
+            app.UseIdentityServer();//Identity server middelware olarak tanımlıyoruz. yani çalıştırıyoruz.
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
