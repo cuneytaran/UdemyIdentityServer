@@ -85,7 +85,7 @@ namespace UdemyIdentityServer.AuthServer
                    ClientName="Client 1 app uygulaması",//kullanıcının API den data almak için işimize yarayacak.
                    ClientSecrets=new[] {new Secret("secret".Sha256())},//şifre secret olarak belirledik. ve bunu şifreledik.yani hash ledik.datayı appsettings den almak daha doğru olur.
                    AllowedGrantTypes= GrantTypes.ClientCredentials,//ClientCredentials= bu akışa uygun token verecek. Akış tipini seçtik.bir çok tipler var. Ençok kullanılan bu tipdir.
-                   AllowedScopes= {"api1.read"}//Hangi API ye erişmek isteyeceğimizi belirliyoruz. 
+                   AllowedScopes= {"api1.read"}//Hangi API den nasıl bir yetki ye erişmek isteyeceğimizi belirliyoruz. 
                 },
                  new Client()
                 {

@@ -1,8 +1,8 @@
-﻿ AuthServer ->  https://localhost:5000;
- Client1 => https://localhost:5005;
- Client2 => https://localhost:5010;
-  API1 => https://localhost:5015;
-  API1 => https://localhost:5020;
+﻿ AuthServer => http://localhost:5000;
+ Client1    => http://localhost:5005;
+ Client2    => http://localhost:5010;
+ API1       => http://localhost:5015;
+ API2       => http://localhost:5020;
 
 **************************************************************************
 OpenId Connect = kullanıcı adı login işlemi (kimlik) Authentication
@@ -25,3 +25,35 @@ https://identityserver4.readthedocs.io/en/latest/
 **************************************************************************
 
 1 AuthServer den ilk Config.cs ile başladık.
+
+
+**************************************************************************
+
+Token almak için POST
+http://localhost:5000/connect/token
+Body - x-www-form
+client_id - Client1
+client_secret - secret
+grant_type - client_credentials
+
+**** client_credentials da refresh token kullanamazsın!!!!!! ****
+
+
+*** Gelen token ***
+eyJhbGciOiJSUzI1NiIsImtpZCI6IjBENTQ3MzI1Q0JBOEEwMEQwREM3NzNFRUUwODdGQjAxIiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE2NjY4OTgyODEsImV4cCI6MTY2NjkwMTg4MSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwIiwiYXVkIjoicmVzb3VyY2VfYXBpMSIsImNsaWVudF9pZCI6IkNsaWVudDEiLCJqdGkiOiIyNzc2NTY1RDUwM0I4MDFGQjQ1QjFFRTIyOTg2ODlDMSIsImlhdCI6MTY2Njg5ODI4MSwic2NvcGUiOlsiYXBpMS5yZWFkIl19.z6Om2qjg7HUCxW-jZlAPDP0wmBVNGXdKKqcaCsTQCUVRF3C7k4djp4WQdiVg6fEKTagYbyote7p8grUkjvMoogV3h7s4UKry-FMpe0h0CLsZiaIPEwc4fwW_HiQXrY5tk1L96la1CXZd0yu40jlUpFqDfDA_VXvvQSRJ1zkM1G5iYHPIvE6L3W3qGpvp4vNvysqZ83EZATZ5gWQUgkXMvbMP98MR1J-6WTIBCcDjpboHtrrTDXc9cDu4fRozZJjazYIKm_BhQGe1QYrU0a2ZuJdVyLJO8bBtTlC8pbGBRoNBpBUb8hcyVcWgAaDB2h-vQrWWlyXMzuvdWM-FGYQLvw
+https://jwt.io/ adresinden bunun içine açtığımızda
+
+{
+  "nbf": 1666898281,                        -----
+  "exp": 1666901881,                        ----- Token sonlanma süresi yani şuanki değer 1 saat Exp ömrü access ömründen daha uzundur
+  "iss": "http://localhost:5000",
+  "aud": "resource_api1",                   ----- Bu token bu API ye istek yapabilir. Metodun üstünde sadece [Authorize] varsa bu bölümle istek yapabilirim aynı zamanda api1.read scobundan hangi yetkiye sahip olduğunu öğrenebiliyoruz
+  "client_id": "Client1",
+  "jti": "2776565D503B801FB45B1EE2298689C1",----- Otomatik olarak üretilmiş bir id numarası
+  "iat": 1666898281,
+  "scope": [                                -----   
+    "api1.read"                             -----
+  ]
+}
+
+**************************************************************************

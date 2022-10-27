@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 
 namespace UdemyIdentityServer.API2
 {
+    //nuget packet ten Microsoft.AspNetCore.Authentication.JwtBearer yükle
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -23,18 +24,25 @@ namespace UdemyIdentityServer.API2
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
+            //JWT token kurulumu yapıyoruz
+            //burası bayi ve normal üyelik sistemini bir birine ayırmak için şema yapısı kullanılıyor.
+            //başka yazım şekli 
+            // services.AddAuthentication("normalUye").AddJwtBearer("normalUye", opts =>
+            // services.AddAuthentication("bayiUye").AddJwtBearer("bayiUye", opts =>
+            //uygulamamdaki şema ismi ile json web token şemadaki isimle aynı olursa birbirine bağlanmış olur.
+            //defaultta gelen yazım şekli
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opts =>
             {
-                opts.Authority = "https://localhost:5001";
-                opts.Audience = "resource_api2";
+                opts.Authority = "https://localhost:5000";//jwt token yani acces token yayınlayan yani yetki kim adresi.yani (identityserver adresi). Buruya bir token geldiğinde bu API gidecek bu adresten public key alacak. idenditity deki private key ile doğrulayacak. kilit anahtar ilişki sayesinde.
+                opts.Audience = "resource_api2";//Benden data alacak kişide mutlaka ismi olmalı. yani jwt içindeki aut daki bilgi. Bana bir token gelidiğinde mutlaka aut alanındaki isimle aynı olmalı.resource_api2 bunu identiyserver projesinin içinde config.cs dosyasının içinde tanımladık.
             });
             services.AddControllers();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -45,8 +53,9 @@ namespace UdemyIdentityServer.API2
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
+            //sıralama önemli ilk UseAuthentication sonra UseAuthorization eklenmeli
+            app.UseAuthentication();//middleware olarak bu eklenmeli. jwt token için gerekli.Kimlik doğrulama.Örn:Doğru site mi.
+            app.UseAuthorization();//Yetkilendirme.Örn: Şu metota erişebilecekmi.
 
             app.UseEndpoints(endpoints =>
             {

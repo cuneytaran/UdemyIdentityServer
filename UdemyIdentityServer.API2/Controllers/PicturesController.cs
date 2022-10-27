@@ -9,6 +9,9 @@ using UdemyIdentityServer.API2.Models;
 
 namespace UdemyIdentityServer.API2.Controllers
 {
+    //API2 => https://localhost:5020;
+
+
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class PicturesController : ControllerBase
