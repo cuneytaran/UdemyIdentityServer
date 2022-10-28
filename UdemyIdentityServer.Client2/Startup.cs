@@ -29,7 +29,7 @@ namespace UdemyIdentityServer.Client2
             }).AddOpenIdConnect("oidc", opts =>
             {
                 opts.SignInScheme = "Cookies";
-                opts.Authority = "https://localhost:5001";
+                opts.Authority = "https://localhost:5000";
                 opts.ClientId = "Client2-Mvc";
                 opts.ClientSecret = "secret";
                 opts.ResponseType = "code id_token";

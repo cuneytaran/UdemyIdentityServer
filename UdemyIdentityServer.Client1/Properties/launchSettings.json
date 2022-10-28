@@ -6,7 +6,7 @@
     //  "environmentVariables": {
     //    "ASPNETCORE_ENVIRONMENT": "Development"
     //  },
-    //  "applicationUrl": "http://localhost:5005"
+    //  "applicationUrl": "https://localhost:5005"
     //},
     "UdemyIdentityServer.Client1": {
       "commandName": "Project",
@@ -14,14 +14,14 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:5005"
+      "applicationUrl": "https://localhost:5005"
     }
   },
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:50005",
+      "applicationUrl": "https://localhost:50005",
       "sslPort": 44394
     }
   }

@@ -7,7 +7,7 @@
     //  "environmentVariables": {
     //    "ASPNETCORE_ENVIRONMENT": "Development"
     //  },
-    //  "applicationUrl": "http://localhost:5015"
+    //  "applicationUrl": "https://localhost:5015"
     //},
     "UdemyIdentityServer.API1": {
       "commandName": "Project",
@@ -16,15 +16,15 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:5015"
+      "applicationUrl": "https://localhost:5015"
     }
   },
-  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "$schema": "https://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:50015",
+      "applicationUrl": "https://localhost:50015",
       "sslPort": 44394
     }
   }

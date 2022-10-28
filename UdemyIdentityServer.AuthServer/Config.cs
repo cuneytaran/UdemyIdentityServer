@@ -18,9 +18,9 @@ namespace UdemyIdentityServer.AuthServer
             {
                 new ApiResource("resource_api1"){//ismini biz verdik
                     Scopes={ "api1.read","api1.write","api1.update" },//tanımlanmış yetkileri atıyoruz (oku,yazma,güncelleme)
-                    ApiSecrets = new []{new  Secret("secretapi1".Sha256())
-                    }
+                    ApiSecrets = new []{new  Secret("secretapi1".Sha256())}
                 },
+
                 new ApiResource("resource_api2")//2.API yi tanımlıyoruz
                 {
                        Scopes={ "api2.read","api2.write","api2.update" },
@@ -62,15 +62,15 @@ namespace UdemyIdentityServer.AuthServer
                 new TestUser{ SubjectId="1",Username="fcakiroglu16",  Password="password",Claims= new List<Claim>(){
                     new Claim("given_name","Fatih"),
                     new Claim("family_name","Çakıroğlu"),
-                   new Claim("country","Türkiye"),
-                      new Claim("city","Ankara"),
-                      new Claim("role","admin")
+                    new Claim("country","Türkiye"),
+                    new Claim("city","Ankara"),
+                    new Claim("role","admin")
                 } },
-                 new TestUser{ SubjectId="2",Username="ahmet16",  Password="password",Claims= new List<Claim>(){
-                new Claim("given_name","Ahmet"),
-                new Claim("family_name","Çakıroğlu"),
-                  new Claim("country","Türkiye"),
-                      new Claim("city","İstanbul"),
+                    new TestUser{ SubjectId="2",Username="ahmet16",  Password="password",Claims= new List<Claim>(){
+                    new Claim("given_name","Ahmet"),
+                    new Claim("family_name","Çakıroğlu"),
+                    new Claim("country","Türkiye"),
+                    new Claim("city","İstanbul"),
                     new Claim("role","customer")
                  } }
             };
