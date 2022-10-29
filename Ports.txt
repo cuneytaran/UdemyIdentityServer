@@ -57,3 +57,5 @@ https://jwt.io/ adresinden bunun içine açtığımızda
 }
 
 **************************************************************************
+
+client crident 17 derste takıldım. Client credentials grant proje uygulaması 6. kısım

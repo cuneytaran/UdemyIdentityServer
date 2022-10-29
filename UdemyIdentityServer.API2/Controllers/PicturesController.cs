@@ -20,12 +20,12 @@ namespace UdemyIdentityServer.API2.Controllers
         public IActionResult GetPictures()
         {
             var pictures = new List<Picture>() {
-           new Picture{  Id=1, Name="Doğa resmi", Url="dogaresmi.jpg"},
-                new Picture{  Id=1, Name="fil resmi", Url="dogaresmi.jpg"},
-                     new Picture{  Id=1, Name="aslan resmi", Url="dogaresmi.jpg"},
-                          new Picture{  Id=1, Name="fare resmi", Url="dogaresmi.jpg"},
-                               new Picture{  Id=1, Name="kedi resmi", Url="dogaresmi.jpg"},
-                                    new Picture{  Id=1, Name="köpek resmi", Url="dogaresmi.jpg"}
+                new Picture{Id=1, Name="Doğa resmi" , Url="dogaresmi.jpg"},
+                new Picture{Id=1, Name="fil resmi"  , Url="dogaresmi.jpg"},
+                new Picture{Id=1, Name="aslan resmi", Url="dogaresmi.jpg"},
+                new Picture{Id=1, Name="fare resmi" , Url="dogaresmi.jpg"},
+                new Picture{Id=1, Name="kedi resmi" , Url="dogaresmi.jpg"},
+                new Picture{Id=1, Name="köpek resmi", Url="dogaresmi.jpg"}
            };
             return Ok(pictures);
         }
