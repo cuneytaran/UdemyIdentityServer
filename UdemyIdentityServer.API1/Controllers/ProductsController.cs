@@ -18,7 +18,7 @@ namespace UdemyIdentityServer.API1.Controllers
     public class ProductsController : ControllerBase
     {
         // http://localhost:5015/api/products/getproducts
-        [Authorize(Policy = "ReadProduct")]      
+        [Authorize(Policy = "ReadProduct")] //ReadProduct=startupdaki 52. satırdaki şartı sağlarsa yani aynı ise bu fonksiyon çalışacak. Tokenin gelemesi yeterli değil, aynı zamanda scobunda ilgili authorize ne ise oda olması gerekiyor.    
         [HttpGet]
         public IActionResult GetProducts()
         {
@@ -33,7 +33,7 @@ namespace UdemyIdentityServer.API1.Controllers
             return Ok(productList);
         }
 
-        [Authorize(Policy = "UpdateOrCreate")]
+        [Authorize(Policy = "UpdateOrCreate")]//UpdateOrCreate=Policy ile UpdateOrCreate şartını sağlaması lazım bu şart ise startupdaki 58. satırdan bahsediyor. aynısını karışlıyorsa yapacak.Bu şartı sağlarsa bu metodu ulaşacak.Tokenin gelemesi yeterli değil, aynı zamanda scobunda ilgili authorize ne ise oda olması gerekiyor. 
         public IActionResult UpdateProduct(int id)
         {
             return Ok($"id'si {id} olan product güncellenmiştir");

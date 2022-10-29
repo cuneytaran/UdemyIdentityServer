@@ -17,14 +17,14 @@ namespace UdemyIdentityServer.AuthServer
             return new List<ApiResource>()//1.API yi tanımlıyoruz.
             {
                 new ApiResource("resource_api1"){//ismini biz verdik
-                    Scopes={ "api1.read","api1.write","api1.update" },//tanımlanmış yetkileri atıyoruz (oku,yazma,güncelleme)
-                    ApiSecrets = new []{new  Secret("secretapi1".Sha256())}
+                    Scopes={ "api1.read","api1.write","api1.update" },//tanımlanmış yetkileri atıyoruz (oku,yazma,güncelleme).//INTROSPECTION ENDPOINT için API nin userName= resource_api1 
+                    ApiSecrets = new []{new  Secret("secretapi1".Sha256())}//INTROSPECTION ENDPOINT için API nin Password=secretapi1
                 },
 
                 new ApiResource("resource_api2")//2.API yi tanımlıyoruz
                 {
-                       Scopes={ "api2.read","api2.write","api2.update" },
-                          ApiSecrets = new []{new  Secret("secretapi2".Sha256()) }
+                       Scopes={ "api2.read","api2.write","api2.update" },//INTROSPECTION ENDPOINT için API nin userName= resource_api2 
+                       ApiSecrets = new []{new  Secret("secretapi2".Sha256()) }//INTROSPECTION ENDPOINT için API nin Password=secretapi2
                 }
             };
         }
@@ -79,21 +79,22 @@ namespace UdemyIdentityServer.AuthServer
         public static IEnumerable<Client> GetClients()//Yukarıdaki API lere hangi clientler kullanacak 15 ve 32. satırlardan bahsediyorum
         {
             return new List<Client>(){//Client = identityserver üzerinden geliyor.
-                new Client()
+
+                new Client()//BU CLIENTLE ÇIKIŞ YAPARSAN SADECE API1 ERİŞEBİLİRSİN
                 {
                    ClientId = "Client1",//sitenin ClientId si olacak bunu kullanıcının username gibi düşünebilirsin
                    ClientName="Client 1 app uygulaması",//kullanıcının API den data almak için işimize yarayacak.
                    ClientSecrets=new[] {new Secret("secret".Sha256())},//şifre secret olarak belirledik. ve bunu şifreledik.yani hash ledik.datayı appsettings den almak daha doğru olur.
                    AllowedGrantTypes= GrantTypes.ClientCredentials,//ClientCredentials= bu akışa uygun token verecek. Akış tipini seçtik.bir çok tipler var. Ençok kullanılan bu tipdir.
-                   AllowedScopes= {"api1.read"}//Hangi API den nasıl bir yetki ye erişmek isteyeceğimizi belirliyoruz. 
+                   AllowedScopes= {"api1.read"}////erişim tanımlandığı yer.Hangi API den nasıl bir yetki ye erişmek isteyeceğimizi belirliyoruz. 
                 },
-                 new Client()
+                 new Client()//BU CLIENTLE ÇIKIŞ YAPARSAN API1 ve API2 YE ERİŞEBİLİRSİN
                 {
                    ClientId = "Client2",
                    ClientName="Client 2 app uygulaması",
                    ClientSecrets=new[] {new Secret("secret".Sha256())},
                    AllowedGrantTypes= GrantTypes.ClientCredentials,
-                   AllowedScopes= {"api1.read" ,"api1.update","api2.write","api2.update"}
+                   AllowedScopes= {"api1.read" ,"api1.update","api2.write","api2.update"}//erişim tanımlandığı yer
                 },
                  new Client()
                  {

@@ -45,16 +45,20 @@ namespace UdemyIdentityServer.API1
                 options.Audience = "resource_api1";//Benden data alacak kişide mutlaka ismi olmalı. yani jwt içindeki aut daki bilgi. Bana bir token gelidiğinde mutlaka aut alanındaki isimle aynı olmalı.resource_api1 bunu identiyserver projesinin içinde config.cs dosyasının içinde tanımladık.
             });
 
+            //kimliği doğrulanmış bir kullanıcının yetkilendirmesi yapılıyor
             services.AddAuthorization(opts =>
             {
+                //policy=koşul, şartname
                 opts.AddPolicy("ReadProduct", policy =>
                 {
-                    policy.RequireClaim("scope", "api1.read");
+                    //token içindeki scope içindeki api1 olanı için sadece okuma iznini ver
+                    policy.RequireClaim("scope", "api1.read"); //ilgili action methot mutlaka scope dunda api1.read bir data bekleyecek
                 });
 
                 opts.AddPolicy("UpdateOrCreate", policy =>
                 {
-                    policy.RequireClaim("scope", new[] { "api1.update", "api1.create" });
+                    //token içindeki scope içindeki api1 olanı için update ve create iznini ver
+                    policy.RequireClaim("scope", new[] { "api1.update", "api1.create" });//ilgili action methot mutlaka scope dunda ya api1.update yada api1.create bir data bekleyecek
                 });
             });
 

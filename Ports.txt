@@ -4,6 +4,11 @@
  API1       => http://localhost:5015;
  API2       => http://localhost:5020;
 
+ Token içini görmek için => https://jwt.io/
+ Documan adresi :https://identityserver4.readthedocs.io/en/latest/
+
+ PostMan yedeği=Bu klasörün içindeki IdentityServer.postman_collection.json adlı dosya
+
 **************************************************************************
 OpenId Connect = kullanıcı adı login işlemi (kimlik) Authentication
 OAuth 2.0 = kullanıcı dönüş bilgileri (yetkileri) Authorization
@@ -19,8 +24,6 @@ Cilent-Secret=Sitenin kullanıcı şifresi
 en önemlisi**Client credentials grant=site identityden token istiyor. bu user ile ilgili değil. Siteyle ilgili. Siteye için token ver.
 Client credentials--- ApiResource= hangi API lerle sorumlu olduğu.API leri tanıtıyor
 Client credentials--- ApiScope=Yetki alanına sahip(okuma izni vs...)
-Documan adresi :
-https://identityserver4.readthedocs.io/en/latest/
 
 **************************************************************************
 
@@ -55,6 +58,44 @@ https://jwt.io/ adresinden bunun içine açtığımızda
     "api1.read"                             -----
   ]
 }
+
+**************************************************************************
+401=token ile authorize olmadın
+403=token geliyor authorize oluyorsun ancak bu methodu çalıştıracak yetkin yok.
+
+public key in başkasını çalmasınan hiç bir anlamı yok. private key önemli.
+
+
+**************************************************************************
+DISCORVERY ENDPOINT=identity serverle beraberinde ayağa kalkan bir endpoint tir.istek yapmak istiyorum URL burdan öğrenebiliryorsun. Scope ve diğer bazı bilgileri dış dünyaya sunmuş oluyor. Buryaa istek yaparak bilgi sahibi olabiliriz.
+postman ile yapılacak istek : GET https://localhost:5001/.well-known/openid-configuration
+gelen datalar içinde 
+   "jwks_uri": "https://localhost:5001/.well-known/openid-configuration/jwks",
+bizim için önemli burdanda 
+https://localhost:5001/.well-known/openid-configuration/jwks 
+adresine postman ile istek atarsan bazı bilgileri verir. hangi şifreleme vs...
+*** Discovery end point tüm var olan enpointlerin adreslerini veriyor...
+
+INTROSPECTION ENDPOINT=Elinde bir token var acaba bu tokenin ilgili API için yetkisi varmı yokmu kontrolü 
+postman ile yapılacak istek : POST GET https://localhost:5001/connect/instrospect
+Authorization kısmını BaseAut seç ve UserName=resource_api1 Password=secretapi1 yap
+body kısmında x-www ye token yaz ve karşısına tokeni ekle
+
+istek yaparken API nin userName ve Password ister...
+config.cs içindeki 19.satırdaki new ApiResource("resource_api1"){//ismini biz verdik
+burdaki resource_api1 bizim userName
+21.satırdaki ApiSecrets = new []{new  Secret("secretapi1".Sha256())}
+burdaki secretapi1 bizim Password
+postmanda
+
+**************************************************************************
+
+IdentityServer içindeki tempkey.jwk
+startup içindeki services.AddIdentityServrver() içindeki 33.satırdaki .AddDeveloperSigningCredential();
+private ve public keyler burda oluşuyor.
+
+
+
 
 **************************************************************************
 
