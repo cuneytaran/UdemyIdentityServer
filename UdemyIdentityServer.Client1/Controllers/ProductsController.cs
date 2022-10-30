@@ -15,10 +15,11 @@ using UdemyIdentityServer.Client1.Services;
 
 namespace UdemyIdentityServer.Client1.Controllers
 {
+    //nuget package den IdentityModel kur
     [Authorize]
     public class ProductsController : Controller
     {
-        private readonly IConfiguration _configuration;
+        private readonly IConfiguration _configuration;//appsetting deki datayı okumak için.
         private readonly IApiResourceHttpClient _apiResourceHttpClient;
 
         public ProductsController(IConfiguration configuration, IApiResourceHttpClient apiResourceHttpClient)

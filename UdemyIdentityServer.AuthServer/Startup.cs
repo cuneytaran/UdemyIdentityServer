@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
 
 namespace UdemyIdentityServer.AuthServer
 {
@@ -23,13 +24,14 @@ namespace UdemyIdentityServer.AuthServer
 
         public void ConfigureServices(IServiceCollection services)
         {
+            IdentityModelEventSource.ShowPII = true;
             //Identity servis kuruyoruz.
             services.AddIdentityServer()
                 .AddInMemoryApiResources(Config.GetApiResources())//identity den memory servislerin şunlar.Yani memoryden ver veritabaından verme
                 .AddInMemoryApiScopes(Config.GetApiScopes())//confi den scope ları getir.
                 .AddInMemoryClients(Config.GetClients())//get clientleride aldık. config.cs den
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())//IDENTITY SERVER ASIMETRIK ŞIFRELEME KULLANIR...Simetrik Şifreleme=hem tokeni doğrulamak hemde tokeni imzalama işlemi Asimterik Şifreleme=Private ve Public key olur. Private tutulur public key şifreyi kim çözecekse onla paylaşılır ve public key sahip olan kişi private keyi doğrulayabilir.
-                .AddTestUsers(Config.GetUsers().ToList())
+                .AddTestUsers(Config.GetUsers().ToList())//Test userlerini tanımlıyoruz.config dosyasında test userlerini tanımlama yaptık.
                 .AddDeveloperSigningCredential();//Public ve Private key oluşturur.private elinde tutar publici app lere dağıtacak. ve app den geldiğinde elindeki public ile karşılaştıracak ve ona göre kapıları açacak veya kapatacak.
 
             services.AddControllersWithViews();

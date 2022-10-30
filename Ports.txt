@@ -9,6 +9,8 @@
 
  PostMan yedeği=Bu klasörün içindeki IdentityServer.postman_collection.json adlı dosya
 
+ ***Benim işime yarayan 5. Bölüm 26. videodan başlıyor. Merkezi üyelik sistemi.
+
 **************************************************************************
 OpenId Connect = kullanıcı adı login işlemi (kimlik) Authentication
 OAuth 2.0 = kullanıcı dönüş bilgileri (yetkileri) Authorization
@@ -100,6 +102,70 @@ private ve public keyler burda oluşuyor.
 **************************************************************************
 
 client crident 17 derste takıldım. Client credentials grant proje uygulaması 6. kısım
+
+**************************************************************************
+
+OAuth 2.0 Grants ( OAuth flow)
+açıklayıcı şeması dökümanı:https://www.rfc-editor.org/rfc/rfc6749#section-1.3.1
+1-Authorization code grant=Gelen kullanıcın kimlik bilgileri doğru artık sen burdan token alabilirsin.Burda iki kere servere gider. birincisi userName Password kontrolü sonrası Authorization code  döner ve o kod ile bir daha döner ve sonra ikinci dönüş sonucunda access token verir.***Bir çok client uygulaman varsa tek bir login ekranı olur ve ordan beslenir.
+2-Implicit grant=Authorization farkı identity serverden farkı iki kere gidip gelmez.daha çok tercih edilir. Fronted uygulamaları için daha uygundur.Mobil ve Angular uygulamalarında daha çok tercih edilir.
+3-***Resource owner credentials grant=*** En çok tercih edilen. senin web ve mobil güvenli ve sen geliştiriyorsan. Authorization server senin kontrolündeyse, Atuhorization code ve Implicit grant akış tipi istenmeyen sistem. Web ve mobil de login sayfası oluşturulur, giriş yap dediğinde arka planda o işlemler yapılır kullanıcı bunu anlamaz. yani identity gider kontrol eder token verir vs...*** tek clientin varsa bunu kullanmalısın. çok client yaparsan hepsinde ayrı ayrı login olma işlemi olacak oda sıkıntı.
+4-Client credentials grant=burda en önemlisi userName ve Password dan gerek yok. sitenin kendine özel bir client ve secreti vardır. identity buna izin verir, erişebilirsin, erişemezsin, erişince yetkin şudur, şunları yapabilirsini vs... gibi.
+
+**************************************************************************
+Identity server hızlı LOGİN sayfası yapmak için
+identiyserver controller içindeki defaul Home u sil.
+adres:https://github.com/IdentityServer/IdentityServer4.Quickstart.UI
+iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/IdentityServer/IdentityServer4.Quickstart.UI/main/getmain.ps1'))
+yukarıdaki komutu identity server sağ  tıkla open folder ile neredeyse o klasörün olduğu yere aç
+Quickstart veya UI diye bir klasör var sil.
+adres çubuğunda adresi kopyala
+powershell aç. adresi yapıştır ve kök klasörü aç
+iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/IdentityServer/IdentityServer4.Quickstart.UI/main/getmain.ps1'))
+yukarıdaki komutu yapıştır. ve otomatik olarak içine Quickstart adında bir klasör oluşturdu.
+eğer doğru çalışıyorsa.
+localhost:5001 de 
+Welcome to IdentityServer4 (version 4.1.0)
+gelmesi gerekiyor.
+oradan 
+Click here to see the claims for your current session. tıklarsan login ekranına götürür
+**login olduktan sonra f12 ile cookie içinde girdiğinde asıl cookie idsrv olan satırdır.
+açılan sayfada Claims kısmında
+**beni hatırla dersen 1 aylık bir cookie oluşturur. Eğer onu tıklamazsan ozaman session bazlı bir cookie olurdu.
+amr =akışı temsil ediyor. pwd=Resource owner credentials (Password)
+atuh_time=Authentation süresini vermiş.
+Properties tarafında
+expires=bitiş tarihi
+session_id =otomatik olarak oluşan session id sini vermiş.
+issued=oluşturulma tarihi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 **************************************************************************

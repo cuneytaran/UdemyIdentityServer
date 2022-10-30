@@ -47,8 +47,9 @@ namespace UdemyIdentityServer.AuthServer
         {
             return new List<IdentityResource>()
             {
-                new IdentityResources.OpenId(), //subId
-                new IdentityResources.Profile(), ///
+                //identity de ön tanımlı bilgiler bunlar.
+                new IdentityResources.OpenId(), //olmazsa olmazı bu.Token döndüğünde içinde mutlaka kullanıcının id si olmalı buda subjectid olarak geçer.Yani userId si için.
+                new IdentityResources.Profile(), //User profil bilgileri. Bunun içinde bir sürü claim tutabilirsiniz.bilgi için adres : https://developer.okta.com/blog/2017/07/25/oidc-primer-part-1
                 new IdentityResource(){ Name="CountryAndCity", DisplayName="Country and City",Description="Kullanıcının ülke ve şehir bilgisi", UserClaims= new [] {"country","city"}},
 
                 new IdentityResource(){ Name="Roles",DisplayName="Roles", Description="Kullanıcı rolleri", UserClaims=new [] { "role"} }
@@ -57,23 +58,28 @@ namespace UdemyIdentityServer.AuthServer
 
         public static IEnumerable<TestUser> GetUsers()
         {
+        //Test aşamasında test etmek için User sınıfı oluşturuyoruz. Burda veritabanı oluşturmadan deneme yapmak için. Yani developer için. işler tamam oldğunda veritabanı oluşutracağız.
+            
             return new List<TestUser>()
             {
-                new TestUser{ SubjectId="1",Username="fcakiroglu16",  Password="password",Claims= new List<Claim>(){
-                    new Claim("given_name","Fatih"),
+                new TestUser{ SubjectId="1",Username="fcakiroglu16",  Password="password",
+                    Claims= new List<Claim>(){ //SubjectId=userID aslında.Bu Calimler token içinde bulunacak datalardır.Aynı zamanda Claim bazlı yetkilendirme yapmak için gereken datalardır.
+                    new Claim("given_name","Fatih"),//given_name,family_name,country vs...= bunlar identity serverin içinde hazırda bulunan claimlerdir.https://developer.okta.com/blog/2017/07/25/oidc-primer-part-1
                     new Claim("family_name","Çakıroğlu"),
                     new Claim("country","Türkiye"),
                     new Claim("city","Ankara"),
-                    new Claim("role","admin")
+                    new Claim("role","customer")
                 } },
-                    new TestUser{ SubjectId="2",Username="ahmet16",  Password="password",Claims= new List<Claim>(){
-                    new Claim("given_name","Ahmet"),
-                    new Claim("family_name","Çakıroğlu"),
+                    new TestUser{ SubjectId="2",Username="caran",  Password="12345",
+                    Claims= new List<Claim>(){
+                    new Claim("given_name","Cünyet"),
+                    new Claim("family_name","Aran"),
                     new Claim("country","Türkiye"),
                     new Claim("city","İstanbul"),
-                    new Claim("role","customer")
+                    new Claim("role","admin")
                  } }
             };
+            //Bu tanımlama yaptıktan sonra startupda tanımla yapman gerekiyor..AddTestUsers(Config.GetUsers().ToList())
         }
 
         public static IEnumerable<Client> GetClients()//Yukarıdaki API lere hangi clientler kullanacak 15 ve 32. satırlardan bahsediyorum

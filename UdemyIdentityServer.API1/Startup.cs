@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.IdentityModel.Logging;
 
 namespace UdemyIdentityServer.API1
 {
@@ -32,6 +33,7 @@ namespace UdemyIdentityServer.API1
       
         public void ConfigureServices(IServiceCollection services)
         {
+            IdentityModelEventSource.ShowPII = true;
             //JWT token kurulumu yapıyoruz
             //burası bayi ve normal üyelik sistemini bir birine ayırmak için şema yapısı kullanılıyor.
             //başka yazım şekli 

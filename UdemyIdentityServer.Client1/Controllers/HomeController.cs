@@ -9,6 +9,7 @@ using UdemyIdentityServer.Client1.Models;
 
 namespace UdemyIdentityServer.Client1.Controllers
 {
+    //nuget package den IdentityModel kur
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
