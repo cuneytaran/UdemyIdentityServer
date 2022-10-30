@@ -10,6 +10,9 @@
  PostMan yedeği=Bu klasörün içindeki IdentityServer.postman_collection.json adlı dosya
 
  ***Benim işime yarayan 5. Bölüm 26. videodan başlıyor. Merkezi üyelik sistemi.
+ *** 28. video genel hataları anlatıyor.
+
+ secret key gizleme yöntemi:https://auth0.com/docs/get-started/authentication-and-authorization-flow/authorization-code-flow-with-proof-key-for-code-exchange-pkce
 
 **************************************************************************
 OpenId Connect = kullanıcı adı login işlemi (kimlik) Authentication
@@ -138,25 +141,6 @@ Properties tarafında
 expires=bitiş tarihi
 session_id =otomatik olarak oluşan session id sini vermiş.
 issued=oluşturulma tarihi
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -105,13 +105,13 @@ namespace UdemyIdentityServer.AuthServer
                  new Client()
                  {
                    ClientId = "Client1-Mvc",
-                   RequirePkce=false,
+                   RequirePkce=false,//secret devre dışı bırakayımmı. Randon challenge ve modifie yapalımmı
                    ClientName="Client 1 app  mvc uygulaması",
                    ClientSecrets=new[] {new Secret("secret".Sha256())},
-                   AllowedGrantTypes= GrantTypes.Hybrid,
-                   RedirectUris=new  List<string>{ "https://localhost:5006/signin-oidc" },
+                   AllowedGrantTypes= GrantTypes.Hybrid,//code id_token kullanıdığımız için hybrid kullanıyoruz.
+                   RedirectUris=new  List<string>{ "https://localhost:5006/signin-oidc" },//token alma işlemini gerçekleştiren URL dir.Authorize endpoint den token buraya gelecek.
                    PostLogoutRedirectUris=new List<string>{ "https://localhost:5006/signout-callback-oidc" },
-                   AllowedScopes = {IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile, "api1.read",IdentityServerConstants.StandardScopes.OfflineAccess,"CountryAndCity","Roles"},
+                   AllowedScopes = {IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile, "api1.read",IdentityServerConstants.StandardScopes.OfflineAccess,"CountryAndCity","Roles"},//identityResource den yetkileri alıyoruz
                    AccessTokenLifetime=2*60*60,
                    AllowOfflineAccess=true,
                    RefreshTokenUsage=TokenUsage.ReUse,

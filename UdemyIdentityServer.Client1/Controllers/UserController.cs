@@ -15,7 +15,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace UdemyIdentityServer.Client1.Controllers
 {
-    [Authorize]
+    [Authorize]//sadec üye olanlar girebilecek
     public class UserController : Controller
     {
         private readonly IConfiguration _configuration;

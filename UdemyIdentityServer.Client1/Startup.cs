@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,6 +16,8 @@ namespace UdemyIdentityServer.Client1
 {
     public class Startup
     {
+        //nuget package den Microsoft.AspNetCore.Authentication.OpenIdConnect yükle
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -23,7 +25,7 @@ namespace UdemyIdentityServer.Client1
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+      
         public void ConfigureServices(IServiceCollection services)
         {
             IdentityModelEventSource.ShowPII = true;
@@ -31,20 +33,21 @@ namespace UdemyIdentityServer.Client1
             services.AddHttpContextAccessor();
             services.AddScoped<IApiResourceHttpClient, ApiResourceHttpClient>();
 
+            //openid ile akış yöntemini belirliyoruz. code id_token yani
             services.AddAuthentication(opts =>
             {
-                opts.DefaultScheme = "Cookies";
-                opts.DefaultChallengeScheme = "oidc";
-            }).AddCookie("Cookies", opts =>
+                opts.DefaultScheme = "Cookies";//benim client1 oluşacak Cookie nin ismi Cookies olsun
+                opts.DefaultChallengeScheme = "oidc";//OpenId cookie ile haberleşecek.Identity serverden gelen cookie ile haberleşecek
+            }).AddCookie("Cookies", opts =>//Cookies isimli şemayı ekle
             {
                 opts.AccessDeniedPath = "/Home/AccessDenied";
-            }).AddOpenIdConnect("oidc", opts =>
+            }).AddOpenIdConnect("oidc", opts =>//oidc isimli OpenId yi şemaya ekler
             {
-                opts.SignInScheme = "Cookies";
-                opts.Authority = "https://localhost:5000";
-                opts.ClientId = "Client1-Mvc";
-                opts.ClientSecret = "secret";
-                opts.ResponseType = "code id_token";
+                opts.SignInScheme = "Cookies";//bizim cookie oluşturuyoruz
+                opts.Authority = "https://localhost:5001";//Token dağıtan yerin adresi. IdentitiyServer yani
+                opts.ClientId = "Client1-Mvc";//ClientId si
+                opts.ClientSecret = "secret";//ClientId şifresi
+                opts.ResponseType = "code id_token";//code:Access token, id_token=doğru yerdenmi gelmiş belirlemek için.
                 opts.GetClaimsFromUserInfoEndpoint = true;
                 opts.SaveTokens = true;
                 opts.Scope.Add("api1.read");
@@ -81,8 +84,8 @@ namespace UdemyIdentityServer.Client1
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
+            app.UseAuthentication();//önce kimlik doğrulama yapılır
+            app.UseAuthorization();//sonra yetkileri erişilir
 
             app.UseEndpoints(endpoints =>
             {
