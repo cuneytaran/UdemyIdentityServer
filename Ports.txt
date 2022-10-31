@@ -14,6 +14,13 @@
 
  secret key gizleme yöntemi:https://auth0.com/docs/get-started/authentication-and-authorization-flow/authorization-code-flow-with-proof-key-for-code-exchange-pkce
 
+ *** https Sertifika hatasını düzeltmek için cmd içine
+ dotnet dev-certs https --clean
+ dotnet dev-certs https
+ dotnet dev-certs https --trust
+
+ **************************************************************************
+ HttpContex ile viewdeki Contex aynı şeydir.
 **************************************************************************
 OpenId Connect = kullanıcı adı login işlemi (kimlik) Authentication
 OAuth 2.0 = kullanıcı dönüş bilgileri (yetkileri) Authorization
@@ -159,12 +166,15 @@ POSTMAN YEDEĞİ = IdentityServer.postman_collection.json
 	"info": {
 		"_postman_id": "2ad9c1ed-fb43-4ac4-9c4d-a5e56f22256e",
 		"name": "IdentityServer",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "https://localhost:5000/connect/token",
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -187,18 +197,7 @@ POSTMAN YEDEĞİ = IdentityServer.postman_collection.json
 						}
 					]
 				},
-				"url": {
-					"raw": "https://localhost:5000/connect/token",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "5000",
-					"path": [
-						"connect",
-						"token"
-					]
-				}
+				"url": "https://localhost:5001/connect/token"
 			},
 			"response": []
 		},
@@ -210,18 +209,10 @@ POSTMAN YEDEĞİ = IdentityServer.postman_collection.json
 			"request": {
 				"auth": {
 					"type": "oauth2",
-					"oauth2": [
-						{
-							"key": "headerPrefix",
-							"value": "Bearer",
-							"type": "string"
-						},
-						{
-							"key": "addTokenTo",
-							"value": "header",
-							"type": "string"
-						}
-					]
+					"oauth2": {
+						"headerPrefix": "Bearer",
+						"addTokenTo": "header"
+					}
 				},
 				"method": "GET",
 				"header": [
@@ -255,19 +246,7 @@ POSTMAN YEDEĞİ = IdentityServer.postman_collection.json
 						}
 					]
 				},
-				"url": {
-					"raw": "https://localhost:5015/api/products/getproducts",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "5015",
-					"path": [
-						"api",
-						"products",
-						"getproducts"
-					]
-				}
+				"url": "https://localhost:5016/api/products/getproducts"
 			},
 			"response": []
 		},
@@ -276,19 +255,7 @@ POSTMAN YEDEĞİ = IdentityServer.postman_collection.json
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "https://localhost:5020/api/pictures/getpictures",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "5020",
-					"path": [
-						"api",
-						"pictures",
-						"getpictures"
-					]
-				}
+				"url": "https://localhost:5020/api/pictures/getpictures"
 			},
 			"response": []
 		},
@@ -297,18 +264,7 @@ POSTMAN YEDEĞİ = IdentityServer.postman_collection.json
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "https://localhost:5001/.well-known/openid-configuration",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "5001",
-					"path": [
-						".well-known",
-						"openid-configuration"
-					]
-				}
+				"url": "https://localhost:5001/.well-known/openid-configuration"
 			},
 			"response": []
 		},
@@ -317,18 +273,10 @@ POSTMAN YEDEĞİ = IdentityServer.postman_collection.json
 			"request": {
 				"auth": {
 					"type": "basic",
-					"basic": [
-						{
-							"key": "password",
-							"value": "secretapi1",
-							"type": "string"
-						},
-						{
-							"key": "username",
-							"value": "resource_api1",
-							"type": "string"
-						}
-					]
+					"basic": {
+						"password": "secretapi1",
+						"username": "resource_api1"
+					}
 				},
 				"method": "POST",
 				"header": [],
@@ -342,18 +290,24 @@ POSTMAN YEDEĞİ = IdentityServer.postman_collection.json
 						}
 					]
 				},
-				"url": {
-					"raw": "https://localhost:5001/connect/introspect",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "5001",
-					"path": [
-						"connect",
-						"introspect"
-					]
-				}
+				"url": "https://localhost:5001/connect/introspect"
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:5001/connect/userinfo",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": {
+						"redirect_uri": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBENTQ3MzI1Q0JBOEEwMEQwREM3NzNFRUUwODdGQjAxIiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE2NjcxMjI4ODcsImV4cCI6MTY2NzEyNjQ4NywiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMSIsImF1ZCI6InJlc291cmNlX2FwaTEiLCJjbGllbnRfaWQiOiJDbGllbnQxIiwianRpIjoiM0JEMEYxODY3MEVDOUZGQUVENzk1MzM4OTRCMzA0OEMiLCJpYXQiOjE2NjcxMjI4ODcsInNjb3BlIjpbImFwaTEucmVhZCJdfQ.H7N5uwh1DLPAbHWiCAtuNmAficqrz-MFSMBwRAzPTKUqVzrS-yoanhzrlSJq3pG374ACuxVZvfL4sVWq7cpSldXpqoLwlXbwY0QNCNGFdhJzjAsbBxwfaSamK7S85U_rPu_Wl30j2NM2VKRV3XH-8U8CSgRHPeq-m7YnkmHI6LTC86shi5UgnZmRyQCodreDMK3AsBLuvxAfOzUIUU5U4H3iPW9pQLIpvdnj2bplqOV7xSvJ3hXEZa4I12dUEQ7ZsYYFtt8XA1Ty6qUX9t8O3LgCr8lZIY8zcHhYhOpcsUlfRYnTO8n3kfj2PYk0nFg8L177A8mqg14lpbd4EioeZQ",
+						"headerPrefix": "Bearer",
+						"addTokenTo": "header"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "https://localhost:5001/connect/userinfo"
 			},
 			"response": []
 		}

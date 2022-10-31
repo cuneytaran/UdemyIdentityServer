@@ -18,6 +18,7 @@ namespace UdemyIdentityServer.Client1.Controllers
     [Authorize]//sadec üye olanlar girebilecek
     public class UserController : Controller
     {
+        //http://5001.../user olarak girdiğinde seni merkezi logine yönlendirir ve tekrar geri döner.
         private readonly IConfiguration _configuration;
 
         public UserController(IConfiguration configuration)
@@ -63,9 +64,9 @@ namespace UdemyIdentityServer.Client1.Controllers
             var tokens = new List<AuthenticationToken>()
             {
                 new AuthenticationToken{ Name=OpenIdConnectParameterNames.IdToken,Value= token.IdentityToken},
-                      new AuthenticationToken{ Name=OpenIdConnectParameterNames.AccessToken,Value= token.AccessToken},
-                            new AuthenticationToken{ Name=OpenIdConnectParameterNames.RefreshToken,Value= token.RefreshToken},
-                                  new AuthenticationToken{ Name=OpenIdConnectParameterNames.ExpiresIn,Value= DateTime.UtcNow.AddSeconds(token.ExpiresIn).ToString("o", CultureInfo.InvariantCulture)}
+                new AuthenticationToken{ Name=OpenIdConnectParameterNames.AccessToken,Value= token.AccessToken},
+                new AuthenticationToken{ Name=OpenIdConnectParameterNames.RefreshToken,Value= token.RefreshToken},
+                new AuthenticationToken{ Name=OpenIdConnectParameterNames.ExpiresIn,Value= DateTime.UtcNow.AddSeconds(token.ExpiresIn).ToString("o", CultureInfo.InvariantCulture)}
             };
 
             var authenticationResult = await HttpContext.AuthenticateAsync();

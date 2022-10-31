@@ -33,6 +33,7 @@ namespace UdemyIdentityServer.Client1
             services.AddHttpContextAccessor();
             services.AddScoped<IApiResourceHttpClient, ApiResourceHttpClient>();
 
+            //MERKEZİ SİSTEME BAĞLANMAK İÇİN services.AddAuthentication KODUNU EKLEYEREK YAPIYORUZ
             //openid ile akış yöntemini belirliyoruz. code id_token yani
             services.AddAuthentication(opts =>
             {
@@ -48,9 +49,9 @@ namespace UdemyIdentityServer.Client1
                 opts.ClientId = "Client1-Mvc";//ClientId si
                 opts.ClientSecret = "secret";//ClientId şifresi
                 opts.ResponseType = "code id_token";//code:Access token, id_token=doğru yerdenmi gelmiş belirlemek için.
-                opts.GetClaimsFromUserInfoEndpoint = true;
-                opts.SaveTokens = true;
-                opts.Scope.Add("api1.read");
+                opts.GetClaimsFromUserInfoEndpoint = true;//cookie içine user bilgilerinide ekler.
+                opts.SaveTokens = true;//Başarılı bir Authorize işleminden sonra Access ve Refresh token kaydediliyor.
+                opts.Scope.Add("api1.read");//identity serverden api1 için okuma izni ver .identityserver config içinde AllowedScopes içinde bu proje için izin vermiştik. api1.read. identity serverdeki izin ne isi bundada aynı izini istemelisin yoksa hata verir.
                 opts.Scope.Add("offline_access");
                 opts.Scope.Add("CountryAndCity");
                 opts.Scope.Add("Roles");
