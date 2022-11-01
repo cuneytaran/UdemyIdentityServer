@@ -152,13 +152,6 @@ issued=oluşturulma tarihi
 
 
 
-
-
-
-
-
-
-
 **************************************************************************
 POSTMAN YEDEĞİ = IdentityServer.postman_collection.json
 İÇİNE AŞAĞIDAKİNİ EKLE VE POSTMAN DEN GERİ YÜKLEME YAPABİLİRSİN

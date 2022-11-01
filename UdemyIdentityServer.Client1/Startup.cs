@@ -52,7 +52,7 @@ namespace UdemyIdentityServer.Client1
                 opts.GetClaimsFromUserInfoEndpoint = true;//cookie içine user bilgilerinide ekler.
                 opts.SaveTokens = true;//Başarılı bir Authorize işleminden sonra Access ve Refresh token kaydediliyor.
                 opts.Scope.Add("api1.read");//identity serverden api1 için okuma izni ver .identityserver config içinde AllowedScopes içinde bu proje için izin vermiştik. api1.read. identity serverdeki izin ne isi bundada aynı izini istemelisin yoksa hata verir.
-                opts.Scope.Add("offline_access");
+                opts.Scope.Add("offline_access");//refresh token alıyoruz
                 opts.Scope.Add("CountryAndCity");
                 opts.Scope.Add("Roles");
                 opts.ClaimActions.MapUniqueJsonKey("country", "country");

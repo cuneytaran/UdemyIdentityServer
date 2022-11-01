@@ -117,7 +117,7 @@ namespace UdemyIdentityServer.AuthServer
                    RefreshTokenUsage=TokenUsage.ReUse,//refresh token birdende fazla kulllanılabilsin.Eğer biz OneTimOnly seçersek bir kez refresh token kullanılır. Eğer ReUse seçersek sürekli kendisini yenileme özelliği olmuş olur.
                    RefreshTokenExpiration=TokenExpiration.Absolute,//refresh token da Absolute seçersek kesin bir süre vermiş oluruz. Mesela 5 gün ömrü bitsin. Sliding verirsek default 15 gün. eğer 15 gün içersinde bir refresh token yaparsak tekrar 15 gün daha uzar. 
                    AbsoluteRefreshTokenLifetime=(int) (DateTime.Now.AddDays(60)-DateTime.Now).TotalSeconds,//Absolute kesin ömür vermiştik. Default da 30 gündür. Ama biz 60 günlük bir refresh token yaptık. 
-                   RequireConsent=false
+                   RequireConsent=false//bunu true yaparsan onay sayfasına otomatik yönlendirir.login olduktan sonra ikinci bir onay sayfasına yönlendirir.Yani token içinde hangi bilgiler olsun olmasın diye checkbox tikleyerek seçebiliyorsun.
                    //yukarıda 2 saatlik token ve 60 günlük refresh token hazırladık.
         },
 

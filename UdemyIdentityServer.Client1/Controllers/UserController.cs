@@ -31,12 +31,16 @@ namespace UdemyIdentityServer.Client1.Controllers
             return View();
         }
 
-        public async Task LogOut()//logout yani çıkış butonu işlemi
+
+        //logout yani çıkış butonu işlemi
+        public async Task LogOut()
         {
             await HttpContext.SignOutAsync("Cookies");//browserden hangi isimli cookie sileceğiz. bunu startupdan bakabiliriz.
             await HttpContext.SignOutAsync("oidc");//identity serverden yani OpenId den çıkış yapıp tekrar geri gelecek.string ismi ise startupdan ve identity serverda var.
         }
 
+
+        //refresh token alma işlemi
         public async Task<IActionResult> GetRefreshToken()
         {
             HttpClient httpClient = new HttpClient();
@@ -47,38 +51,42 @@ namespace UdemyIdentityServer.Client1.Controllers
                 //loglama yap
             }
 
-            var refreshToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.RefreshToken);
+            var refreshToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.RefreshToken);//refresh token alıyoruz.RefreshToken yerine AccessToken yaparsak AccessToken almış oluruz.
 
+            //aldığımız refresh tokeni modele dolduruyoruz
             RefreshTokenRequest refreshTokenRequest = new RefreshTokenRequest();
-            refreshTokenRequest.ClientId = _configuration["Client1Mvc:ClientId"];
-            refreshTokenRequest.ClientSecret = _configuration["Client1Mvc:ClientSecret"];
-            refreshTokenRequest.RefreshToken = refreshToken;
-            refreshTokenRequest.Address = disco.TokenEndpoint;
+            refreshTokenRequest.ClientId = _configuration["Client1Mvc:ClientId"];//clientid yi alıyoruz.appsettings.json dan secret bilgisini çekiyoruz
+            refreshTokenRequest.ClientSecret = _configuration["Client1Mvc:ClientSecret"];//secret key. configuration dan okuyoruz. yani appsettings.json dan.Client1Mvc:ClientSecret=Client1Mvc den ClientSecret e ulaşıyoruz
+            refreshTokenRequest.RefreshToken = refreshToken;//yukarıdan çektiğimiz refresh token
+            refreshTokenRequest.Address = disco.TokenEndpoint;//yukarıda disco içinde tüm endpointleri çektik identity den. biz TokenEndpoint i alıyoruz.
 
-            var token = await httpClient.RequestRefreshTokenAsync(refreshTokenRequest);
+            var token = await httpClient.RequestRefreshTokenAsync(refreshTokenRequest);//refresh tokenle birlikte tüm tokenleri çekiyoruz.(refresh, Access vs...)
 
             if (token.IsError)
             {
                 //yönlendirme yap
             }
-            var tokens = new List<AuthenticationToken>()
+            var tokens = new List<AuthenticationToken>()//yeni gelen tüm tokenleri ayıklıyoruz.
             {
-                new AuthenticationToken{ Name=OpenIdConnectParameterNames.IdToken,Value= token.IdentityToken},
-                new AuthenticationToken{ Name=OpenIdConnectParameterNames.AccessToken,Value= token.AccessToken},
-                new AuthenticationToken{ Name=OpenIdConnectParameterNames.RefreshToken,Value= token.RefreshToken},
-                new AuthenticationToken{ Name=OpenIdConnectParameterNames.ExpiresIn,Value= DateTime.UtcNow.AddSeconds(token.ExpiresIn).ToString("o", CultureInfo.InvariantCulture)}
+                new AuthenticationToken{ Name=OpenIdConnectParameterNames.IdToken,Value= token.IdentityToken},//IdToken yani identityToken alıyoruz
+                new AuthenticationToken{ Name=OpenIdConnectParameterNames.AccessToken,Value= token.AccessToken},//AccesToken alıyoruz
+                new AuthenticationToken{ Name=OpenIdConnectParameterNames.RefreshToken,Value= token.RefreshToken},//Refresh Token alıyoruz
+                new AuthenticationToken{ Name=OpenIdConnectParameterNames.ExpiresIn,Value= DateTime.UtcNow.AddSeconds(token.ExpiresIn).ToString("o", CultureInfo.InvariantCulture)}//tokenin ömrünü çekiyoruz.CultureInfo.InvariantCulture=Tüm ülkelerde aynı saati göster.Saatte değişiklik yapma
             };
 
-            var authenticationResult = await HttpContext.AuthenticateAsync();
+            var authenticationResult = await HttpContext.AuthenticateAsync();//Authenticate verilerini alıyoruz
 
-            var properties = authenticationResult.Properties;
+            var properties = authenticationResult.Properties;//Authenticate nin propertilerinide alıyoruz.index sayfasında bunu göstermiştik aslında ordan bakabirsin hangi bilgiler geliyor diye.
 
-            properties.StoreTokens(tokens);
+            properties.StoreTokens(tokens);//tokenlar artık set edilmiş oldu. Yani bu tokenler geçerli olmuş oldu.Token ve refresh token değişikliğini görmezden geliyoruz.
 
-            await HttpContext.SignInAsync("Cookies", authenticationResult.Principal, properties);
+            await HttpContext.SignInAsync("Cookies", authenticationResult.Principal, properties);//Principal=kimlik Bir kimlik kartı gibi düşün, burdaki ad soyad doğumtarihi vs... kullanıcının bilgilerini gösteren bir kimlik ver.Yani SignIn olduğunda yei cookilerle ilgili bilgileri güncelledik.
 
             return RedirectToAction("Index");
         }
+
+
+
 
         [Authorize(Roles = "admin")]
         public IActionResult AdminAction()
