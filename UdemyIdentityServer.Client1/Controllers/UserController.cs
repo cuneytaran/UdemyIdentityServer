@@ -31,10 +31,10 @@ namespace UdemyIdentityServer.Client1.Controllers
             return View();
         }
 
-        public async Task LogOut()
+        public async Task LogOut()//logout yani çıkış butonu işlemi
         {
-            await HttpContext.SignOutAsync("Cookies");
-            await HttpContext.SignOutAsync("oidc");
+            await HttpContext.SignOutAsync("Cookies");//browserden hangi isimli cookie sileceğiz. bunu startupdan bakabiliriz.
+            await HttpContext.SignOutAsync("oidc");//identity serverden yani OpenId den çıkış yapıp tekrar geri gelecek.string ismi ise startupdan ve identity serverda var.
         }
 
         public async Task<IActionResult> GetRefreshToken()

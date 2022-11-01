@@ -58,8 +58,8 @@ namespace UdemyIdentityServer.AuthServer
 
         public static IEnumerable<TestUser> GetUsers()
         {
-        //Test aşamasında test etmek için User sınıfı oluşturuyoruz. Burda veritabanı oluşturmadan deneme yapmak için. Yani developer için. işler tamam oldğunda veritabanı oluşutracağız.
-            
+            //Test aşamasında test etmek için User sınıfı oluşturuyoruz. Burda veritabanı oluşturmadan deneme yapmak için. Yani developer için. işler tamam oldğunda veritabanı oluşutracağız.
+
             return new List<TestUser>()
             {
                 new TestUser{ SubjectId="1",Username="fcakiroglu16",  Password="password",
@@ -109,16 +109,16 @@ namespace UdemyIdentityServer.AuthServer
                    ClientName="Client 1 app  mvc uygulaması",
                    ClientSecrets=new[] {new Secret("secret".Sha256())},
                    AllowedGrantTypes= GrantTypes.Hybrid,//code id_token kullanıdığımız için hybrid kullanıyoruz.
-                   RedirectUris=new  List<string>{ "https://localhost:5006/signin-oidc" },//token alma işlemini gerçekleştiren URL dir.Authorize endpoint den token buraya gelecek.
-                   PostLogoutRedirectUris=new List<string>{ "https://localhost:5006/signout-callback-oidc" },
-                   AllowedScopes = {IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile, "api1.read",IdentityServerConstants.StandardScopes.OfflineAccess,"CountryAndCity","Roles"},//identityResource den yetkileri alıyoruz
-                   AccessTokenLifetime=2*60*60,
-                   AllowOfflineAccess=true,
-                   RefreshTokenUsage=TokenUsage.ReUse,
-                   RefreshTokenExpiration=TokenExpiration.Absolute,
-                   AbsoluteRefreshTokenLifetime=(int) (DateTime.Now.AddDays(60)-DateTime.Now).TotalSeconds,
-
+                   RedirectUris=new  List<string>{ "https://localhost:5006/signin-oidc" },//token alma işlemini gerçekleştiren URL dir.Authorize endpoint den token bu adrese yönlenecek.
+                   PostLogoutRedirectUris=new List<string>{ "https://localhost:5006/signout-callback-oidc" },//identity serverden logout işlemi olduğunda bu adrese yönlenecek.
+                   AllowedScopes = {IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile, "api1.read",IdentityServerConstants.StandardScopes.OfflineAccess,"CountryAndCity","Roles"},//identityResource den yetkileri alıyoruz.OfflineAccess startup tarafında tanımladık.
+                   AccessTokenLifetime=2*60*60,//access token ömrü tanımlıyoruz.Biz 2 saatlik yaptık.Defaultda bunu saniye bazında yapıyoruz.Defaultu 3600 sn yani 1 saat. 2*60*60=saat*dakika*saniye ikinci yol (int) (DateTime.Now.AddDays(60)-DateTime.Now).TotalSeconds
+                   AllowOfflineAccess=true,//refresh token oluşturma komutu
+                   RefreshTokenUsage=TokenUsage.ReUse,//refresh token birdende fazla kulllanılabilsin.Eğer biz OneTimOnly seçersek bir kez refresh token kullanılır. Eğer ReUse seçersek sürekli kendisini yenileme özelliği olmuş olur.
+                   RefreshTokenExpiration=TokenExpiration.Absolute,//refresh token da Absolute seçersek kesin bir süre vermiş oluruz. Mesela 5 gün ömrü bitsin. Sliding verirsek default 15 gün. eğer 15 gün içersinde bir refresh token yaparsak tekrar 15 gün daha uzar. 
+                   AbsoluteRefreshTokenLifetime=(int) (DateTime.Now.AddDays(60)-DateTime.Now).TotalSeconds,//Absolute kesin ömür vermiştik. Default da 30 gündür. Ama biz 60 günlük bir refresh token yaptık. 
                    RequireConsent=false
+                   //yukarıda 2 saatlik token ve 60 günlük refresh token hazırladık.
         },
 
                   new Client()
