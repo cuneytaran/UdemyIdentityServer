@@ -158,6 +158,7 @@ issued=oluşturulma tarihi
 * ClientName="Client 2 app  mvc uygulaması", olarak Client 2 olarak değiştir
 * Cilent2 hangi portta çalışıyorsa onu ayarla Örn:RedirectUris=new  List<string>{ "https://localhost:5011/signin-oidc" }, 
 * Client2 yede aynı porta ayarla Örn:PostLogoutRedirectUris=new List<string>{ "https://localhost:5011/signout-callback-oidc" },
+* Client2 AllowedScopes da "api1.read","api2.read" vererek iki apiyede erişim verebilirsin.
 -- startup içindeki public void Configure içinde app.UseAuthorization(); üst satırına!!! app.UseAuthentication(); ekle
 -- Home Controller de mesela public IActionResult User() üzerine [Authorize] ekle
 -- Kontrol için. boş bir view oluştur User için mesela.
