@@ -41,7 +41,7 @@ namespace UdemyIdentityServer.Client1
                 opts.DefaultChallengeScheme = "oidc";//OpenId cookie ile haberleşecek.Identity serverden gelen cookie ile haberleşecek
             }).AddCookie("Cookies", opts =>//Cookies isimli şemayı ekle
             {
-                opts.AccessDeniedPath = "/Home/AccessDenied";
+                opts.AccessDeniedPath = "/Home/AccessDenied";//yetkisi olmayan bir kullanıcı erişmeye çalıştığında bu sayfaya yönlendiriyoruz.
             }).AddOpenIdConnect("oidc", opts =>//oidc isimli OpenId yi şemaya ekler
             {
                 opts.SignInScheme = "Cookies";//bizim cookie oluşturuyoruz
@@ -53,15 +53,15 @@ namespace UdemyIdentityServer.Client1
                 opts.SaveTokens = true;//Başarılı bir Authorize işleminden sonra Access ve Refresh token kaydediliyor.
                 opts.Scope.Add("api1.read");//identity serverden api1 için okuma izni ver .identityserver config içinde AllowedScopes içinde bu proje için izin vermiştik. api1.read. identity serverdeki izin ne isi bundada aynı izini istemelisin yoksa hata verir.
                 opts.Scope.Add("offline_access");//refresh token alıyoruz
-                opts.Scope.Add("CountryAndCity");
-                opts.Scope.Add("Roles");
-                opts.ClaimActions.MapUniqueJsonKey("country", "country");
+                opts.Scope.Add("CountryAndCity");//config.cs dosyasındaki country bilgisini çekiyoruz
+                opts.Scope.Add("Roles");//rolleride ekle diyoruz
+                opts.ClaimActions.MapUniqueJsonKey("country", "country");//token içindeki city ye mapledik.
                 opts.ClaimActions.MapUniqueJsonKey("city", "city");
-                opts.ClaimActions.MapUniqueJsonKey("role", "role");
+                opts.ClaimActions.MapUniqueJsonKey("role", "role");//token içindeki role mapladik
 
                 opts.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                 {
-                    RoleClaimType = "role"
+                    RoleClaimType = "role"// token bazlı doğrulama var ve rol olarak yukardaki role ü seç diyoruz.
                 };
             });
 

@@ -87,13 +87,14 @@ namespace UdemyIdentityServer.Client1.Controllers
 
 
 
-
+        //admin rollü kullanıcılar bu sayfaya açabilir
         [Authorize(Roles = "admin")]
-        public IActionResult AdminAction()
+        public IActionResult AdminAction() 
         {
             return View();
         }
 
+        //admin ve customer rollü  kullanıcılar bu sayfaya açabilir
         [Authorize(Roles = "admin,customer")]
         public IActionResult CustomerAction()
         {

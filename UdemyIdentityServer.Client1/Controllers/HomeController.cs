@@ -29,9 +29,9 @@ namespace UdemyIdentityServer.Client1.Controllers
             return View();
         }
 
-        public IActionResult AccessDenied(string ReturnUrl)
+        public IActionResult AccessDenied(string ReturnUrl)//yekisiz kullanıcı sayfaya ulaşmaya çalıştığında buraya yönlendirilecek.
         {
-            ViewBag.url = ReturnUrl;
+            ViewBag.url = ReturnUrl;//ReturnUrl=hangi sayfaya erişemiyorsa buraya o adres geliyor.
 
             return View();
         }

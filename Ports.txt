@@ -149,7 +149,19 @@ expires=bitiş tarihi
 session_id =otomatik olarak oluşan session id sini vermiş.
 issued=oluşturulma tarihi
 
-
+**************************************************************************
+***YENİ BİR PROJE EKLEMEK İÇİN YAPILACAK ADIMLAR
+-- Client2 de Nuget package den Microsoft.AspNetCore.Authentication.OpenIdConnect yükle
+-- Client1 deki startupdaki  ConfigureServices içindekileri koplaya, Client2 için içine yapıştır
+-- IdentityServer da config.cs içinde public static IEnumerable<Client> GetClients() içindeki 107. satırdaki new Client() tın aynısından alta bir tane daha yapıştır ve
+* CilentId sini değiştir.örn:ClientId = "Client2-Mvc",
+* ClientName="Client 2 app  mvc uygulaması", olarak Client 2 olarak değiştir
+* Cilent2 hangi portta çalışıyorsa onu ayarla Örn:RedirectUris=new  List<string>{ "https://localhost:5011/signin-oidc" }, 
+* Client2 yede aynı porta ayarla Örn:PostLogoutRedirectUris=new List<string>{ "https://localhost:5011/signout-callback-oidc" },
+-- startup içindeki public void Configure içinde app.UseAuthorization(); üst satırına!!! app.UseAuthentication(); ekle
+-- Home Controller de mesela public IActionResult User() üzerine [Authorize] ekle
+-- Kontrol için. boş bir view oluştur User için mesela.
+-- localhost:5011/home/user yaptığında eğer login olmamışsan seni login sayfasına yani identity sayfasına yönlendirecektir.
 
 
 **************************************************************************
@@ -163,7 +175,7 @@ POSTMAN YEDEĞİ = IdentityServer.postman_collection.json
 	},
 	"item": [
 		{
-			"name": "https://localhost:5000/connect/token",
+			"name": "https://localhost:5001/connect/token",
 			"request": {
 				"auth": {
 					"type": "noauth"

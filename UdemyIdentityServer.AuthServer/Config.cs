@@ -50,9 +50,9 @@ namespace UdemyIdentityServer.AuthServer
                 //identity de ön tanımlı bilgiler bunlar.
                 new IdentityResources.OpenId(), //olmazsa olmazı bu.Token döndüğünde içinde mutlaka kullanıcının id si olmalı buda subjectid olarak geçer.Yani userId si için.
                 new IdentityResources.Profile(), //User profil bilgileri. Bunun içinde bir sürü claim tutabilirsiniz.bilgi için adres : https://developer.okta.com/blog/2017/07/25/oidc-primer-part-1
-                new IdentityResource(){ Name="CountryAndCity", DisplayName="Country and City",Description="Kullanıcının ülke ve şehir bilgisi", UserClaims= new [] {"country","city"}},
+                new IdentityResource(){ Name="CountryAndCity", DisplayName="Country and City",Description="Kullanıcının ülke ve şehir bilgisi", UserClaims= new [] {"country","city"}},//ülke ve şehir bilgisini tutuyoruz ve istediğimiz clientlere vereceğiz.Custom bilgiler ekliyoruz
 
-                new IdentityResource(){ Name="Roles",DisplayName="Roles", Description="Kullanıcı rolleri", UserClaims=new [] { "role"} }
+                new IdentityResource(){ Name="Roles",DisplayName="Roles", Description="Kullanıcı rolleri", UserClaims=new [] { "role"} }//Roller tanımlanıyor ve role isminde claim oluşturduk.Yani token içinde role de gelecek
             };
         }
 
@@ -62,22 +62,23 @@ namespace UdemyIdentityServer.AuthServer
 
             return new List<TestUser>()
             {
-                new TestUser{ SubjectId="1",Username="fcakiroglu16",  Password="password",
-                    Claims= new List<Claim>(){ //SubjectId=userID aslında.Bu Calimler token içinde bulunacak datalardır.Aynı zamanda Claim bazlı yetkilendirme yapmak için gereken datalardır.
-                    new Claim("given_name","Fatih"),//given_name,family_name,country vs...= bunlar identity serverin içinde hazırda bulunan claimlerdir.https://developer.okta.com/blog/2017/07/25/oidc-primer-part-1
-                    new Claim("family_name","Çakıroğlu"),
-                    new Claim("country","Türkiye"),
-                    new Claim("city","Ankara"),
-                    new Claim("role","customer")
-                } },
-                    new TestUser{ SubjectId="2",Username="caran",  Password="12345",
+                new TestUser{ SubjectId="2",Username="caran",  Password="12345",
                     Claims= new List<Claim>(){
                     new Claim("given_name","Cüneyt"),
                     new Claim("family_name","Aran"),
                     new Claim("country","Türkiye"),
                     new Claim("city","İstanbul"),
                     new Claim("role","admin")
-                 } }
+                 } },
+                new TestUser{ SubjectId="1",Username="caran2",  Password="12345",
+                    Claims= new List<Claim>(){ //SubjectId=userID aslında.Bu Calimler token içinde bulunacak datalardır.Aynı zamanda Claim bazlı yetkilendirme yapmak için gereken datalardır.
+                    new Claim("given_name","Fatih"),//given_name,family_name,country vs...= bunlar identity serverin içinde hazırda bulunan claimlerdir.https://developer.okta.com/blog/2017/07/25/oidc-primer-part-1
+                    new Claim("family_name","Çakıroğlu"),
+                    new Claim("country","Türkiye"),
+                    new Claim("city","Ankara"),
+                    new Claim("role","customer")//userin rolü tanımlanıyor
+                } }
+
             };
             //Bu tanımlama yaptıktan sonra startupda tanımla yapman gerekiyor..AddTestUsers(Config.GetUsers().ToList())
         }
@@ -130,7 +131,7 @@ namespace UdemyIdentityServer.AuthServer
                    AllowedGrantTypes= GrantTypes.Hybrid,
                    RedirectUris=new  List<string>{ "https://localhost:5011/signin-oidc" },
                    PostLogoutRedirectUris=new List<string>{ "https://localhost:5011/signout-callback-oidc" },
-                   AllowedScopes = {IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile, "api1.read","api2.read",IdentityServerConstants.StandardScopes.OfflineAccess,"CountryAndCity","Roles"},
+                   AllowedScopes = {IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile, "api1.read","api2.read",IdentityServerConstants.StandardScopes.OfflineAccess,"CountryAndCity","Roles"},//"CountryAndCity","Roles"=token içinde country ve rollerde görünecek
                    AccessTokenLifetime=2*60*60,
                    AllowOfflineAccess=true,
                    RefreshTokenUsage=TokenUsage.ReUse,
