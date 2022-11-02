@@ -72,6 +72,9 @@ https://jwt.io/ adresinden bunun içine açtığımızda
 }
 
 **************************************************************************
+Önemli!!! HttpContext i normalde bir controller içinden erişebiliyoruz. Ancak dışarıdan herhangi bir yerden erişmek istiyorsak HttpContextAccessor kullanmalıyız!!!!!
+
+**************************************************************************
 401=token ile authorize olmadın
 403=token geliyor authorize oluyorsun ancak bu methodu çalıştıracak yetkin yok.
 

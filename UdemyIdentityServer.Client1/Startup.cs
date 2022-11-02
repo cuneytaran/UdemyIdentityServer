@@ -30,8 +30,8 @@ namespace UdemyIdentityServer.Client1
         {
             IdentityModelEventSource.ShowPII = true;
 
-            services.AddHttpContextAccessor();
-            services.AddScoped<IApiResourceHttpClient, ApiResourceHttpClient>();
+            services.AddHttpContextAccessor();//bunu eklersen heryerden contexi ulaşabilirsin.
+            services.AddScoped<IApiResourceHttpClient, ApiResourceHttpClient>();//servis içinde interface oluşturduk.Burda onu tanımlıyoruz. Scope her seferinde bir tane örneğini alacak anlamında.
 
             //MERKEZİ SİSTEME BAĞLANMAK İÇİN services.AddAuthentication KODUNU EKLEYEREK YAPIYORUZ
             //openid ile akış yöntemini belirliyoruz. code id_token yani
