@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
+using UdemyIdentityServer.AuthServer.Models;
+using UdemyIdentityServer.AuthServer.Repository;
 
 namespace UdemyIdentityServer.AuthServer
 {
@@ -25,6 +28,13 @@ namespace UdemyIdentityServer.AuthServer
         public void ConfigureServices(IServiceCollection services)
         {
             IdentityModelEventSource.ShowPII = true;
+
+            services.AddScoped<ICustomUserRepository, CustomUserRepository>();
+
+            services.AddDbContext<CustomDbContext>(option =>
+            {
+                option.UseSqlServer(Configuration.GetConnectionString("LocalDb"));
+            });
             //Identity servis kuruyoruz.
             services.AddIdentityServer()
                 .AddInMemoryApiResources(Config.GetApiResources())//identity den memory servislerin şunlar.Yani memoryden ver veritabaından verme
