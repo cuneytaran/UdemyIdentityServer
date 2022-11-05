@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,13 +37,24 @@ namespace UdemyIdentityServer.AuthServer
             {
                 option.UseSqlServer(Configuration.GetConnectionString("LocalDb"));
             });
+
+            var assemblyName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;//Framework içinden isimi al diyoruz.
+
             //Identity servis kuruyoruz.
             services.AddIdentityServer()
-                .AddInMemoryApiResources(Config.GetApiResources())//identity den memory servislerin şunlar.Yani memoryden ver veritabaından verme
-                .AddInMemoryApiScopes(Config.GetApiScopes())//confi den scope ları getir.
-                .AddInMemoryClients(Config.GetClients())//get clientleride aldık. config.cs den
-                .AddInMemoryIdentityResources(Config.GetIdentityResources())//IDENTITY SERVER ASIMETRIK ŞIFRELEME KULLANIR...Simetrik Şifreleme=hem tokeni doğrulamak hemde tokeni imzalama işlemi Asimterik Şifreleme=Private ve Public key olur. Private tutulur public key şifreyi kim çözecekse onla paylaşılır ve public key sahip olan kişi private keyi doğrulayabilir.
-                 //.AddTestUsers(Config.GetUsers().ToList())//Test userlerini tanımlıyoruz.config dosyasında test userlerini tanımlama yaptık.
+                .AddConfigurationStore(opts =>
+                {
+                    opts.ConfigureDbContext = c => c.UseSqlServer(Configuration.GetConnectionString("LocalDb"), sqlopts => sqlopts.MigrationsAssembly(assemblyName)); //Framework ile ConfigurationDbContext işlemini hallettik
+                }) //Framework ile client,resoures, scopes leri benim vermiş olduğumuz tablolorı kaydedecek. bunu identity server kaydedecek.
+                .AddOperationalStore(opts =>
+                {
+                    opts.ConfigureDbContext = c => c.UseSqlServer(Configuration.GetConnectionString("LocalDb"), sqlopts => sqlopts.MigrationsAssembly(assemblyName)); //Framework ile ConfigurationDbContext işlemini hallettik
+                }) //Aynı veritabanı kullanacak. kayıt işlemi için.
+                //.AddInMemoryApiResources(Config.GetApiResources())//identity den memory servislerin şunlar.Yani memoryden ver veritabaından verme
+                //.AddInMemoryApiScopes(Config.GetApiScopes())//confi den scope ları getir.
+                //.AddInMemoryClients(Config.GetClients())//get clientleride aldık. config.cs den
+                //.AddInMemoryIdentityResources(Config.GetIdentityResources())//IDENTITY SERVER ASIMETRIK ŞIFRELEME KULLANIR...Simetrik Şifreleme=hem tokeni doğrulamak hemde tokeni imzalama işlemi Asimterik Şifreleme=Private ve Public key olur. Private tutulur public key şifreyi kim çözecekse onla paylaşılır ve public key sahip olan kişi private keyi doğrulayabilir.
+                //.AddTestUsers(Config.GetUsers().ToList())//Test userlerini tanımlıyoruz.config dosyasında test userlerini tanımlama yaptık.
                 .AddDeveloperSigningCredential()//Public ve Private key oluşturur.private elinde tutar publici app lere dağıtacak. ve app den geldiğinde elindeki public ile karşılaştıracak ve ona göre kapıları açacak veya kapatacak.
                 .AddProfileService<CustomProfileService>();
             services.AddControllersWithViews();

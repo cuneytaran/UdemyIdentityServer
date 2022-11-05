@@ -9,7 +9,7 @@ namespace UdemyIdentityServer.AuthServer.Models
         //Microsoft.EntityFrameworkCore.SqlServer
         //Microsoft.EntityFrameworkCore.Tools
 
-        public CustomDbContext(DbContextOptions opts):base(opts)
+        public CustomDbContext(DbContextOptions<CustomDbContext> opts):base(opts)
         {
 
         }

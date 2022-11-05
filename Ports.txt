@@ -38,9 +38,18 @@ Client credentials--- ApiResource= hangi API lerle sorumlu olduğu.API leri tan�
 Client credentials--- ApiScope=Yetki alanına sahip(okuma izni vs...)
 
 **************************************************************************
+ile migration işlemi yapabilirsin
+update-database -c PersistedGrantDbContext
+update-database -c ConfigurationDbContext
+-oluşturmaları şöyle oldu
+add-migration Initial -c PersistedDbContext
+add-migration Initial -c ConfigurationDbContext
 
 1 AuthServer den ilk Config.cs ile başladık.
 
+
+**************************************************************************
+using(){} ve program.cs sadece bir kere çalıştırılır.
 
 **************************************************************************
 

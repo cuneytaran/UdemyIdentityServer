@@ -59,8 +59,8 @@ namespace UdemyIdentityServer.Client1.Controllers
 
             //aldığımız refresh tokeni modele dolduruyoruz
             RefreshTokenRequest refreshTokenRequest = new RefreshTokenRequest();
-            refreshTokenRequest.ClientId = _configuration["Client1Mvc:ClientId"];//clientid yi alıyoruz.appsettings.json dan secret bilgisini çekiyoruz
-            refreshTokenRequest.ClientSecret = _configuration["Client1Mvc:ClientSecret"];//secret key. configuration dan okuyoruz. yani appsettings.json dan.Client1Mvc:ClientSecret=Client1Mvc den ClientSecret e ulaşıyoruz
+            refreshTokenRequest.ClientId = _configuration["ClientResourceOwner:ClientId"];//clientid yi alıyoruz.appsettings.json dan secret bilgisini çekiyoruz
+            refreshTokenRequest.ClientSecret = _configuration["ClientResourceOwner:ClientSecret"];//secret key. configuration dan okuyoruz. yani appsettings.json dan.Client1Mvc:ClientSecret=Client1Mvc den ClientSecret e ulaşıyoruz
             refreshTokenRequest.RefreshToken = refreshToken;//yukarıdan çektiğimiz refresh token
             refreshTokenRequest.Address = disco.TokenEndpoint;//yukarıda disco içinde tüm endpointleri çektik identity den. biz TokenEndpoint i alıyoruz.
 
