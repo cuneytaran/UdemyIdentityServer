@@ -43,6 +43,10 @@ namespace UdemyIdentityServer.Client1.Controllers
         //refresh token alma işlemi
         public async Task<IActionResult> GetRefreshToken()
         {
+            //iki şekildede username alınabilir.
+            var username=User.Claims.First(x=>x.Type=="name").Value;
+            var username2 = User.Identity.Name;//bu şekilde username almak istiyorsan mutlaka startup opts.TokenValidationParameters içinde NameClaimType="name" olarak tanımlamılısın.
+
             HttpClient httpClient = new HttpClient();
             var disco = await httpClient.GetDiscoveryDocumentAsync("https://localhost:5001");
 

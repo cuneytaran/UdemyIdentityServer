@@ -55,13 +55,15 @@ namespace UdemyIdentityServer.Client1
                 opts.Scope.Add("offline_access");//refresh token alıyoruz
                 opts.Scope.Add("CountryAndCity");//config.cs dosyasındaki country bilgisini çekiyoruz
                 opts.Scope.Add("Roles");//rolleride ekle diyoruz
-                opts.ClaimActions.MapUniqueJsonKey("country", "country");//token içindeki city ye mapledik.
-                opts.ClaimActions.MapUniqueJsonKey("city", "city");
+                opts.Scope.Add("email");//emaili ekliyoruz
+                opts.ClaimActions.MapUniqueJsonKey("country", "country");//token içindeki country ye mapledik.
+                opts.ClaimActions.MapUniqueJsonKey("city", "city");//token içine city ekliyoruz
                 opts.ClaimActions.MapUniqueJsonKey("role", "role");//token içindeki role mapladik
 
                 opts.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                 {
-                    RoleClaimType = "role"// token bazlı doğrulama var ve rol olarak yukardaki role ü seç diyoruz.
+                    RoleClaimType = "role",// token bazlı doğrulama var ve rol olarak yukardaki role ü seç diyoruz.
+                    NameClaimType="name"//herhangi bir clientin içinde User.Identity.name den username ulaşabilmek için
                 };
             });
 

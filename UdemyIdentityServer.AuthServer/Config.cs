@@ -47,7 +47,8 @@ namespace UdemyIdentityServer.AuthServer
         {
             return new List<IdentityResource>()
             {
-                //identity de ön tanımlı bilgiler bunlar.
+                //identity de ön tanımlı bilgiler bunlar.                ,
+                new IdentityResources.Email(),//kullanıcının emailini alabilme
                 new IdentityResources.OpenId(), //olmazsa olmazı bu.Token döndüğünde içinde mutlaka kullanıcının id si olmalı buda subjectid olarak geçer.Yani userId si için.
                 new IdentityResources.Profile(), //User profil bilgileri. Bunun içinde bir sürü claim tutabilirsiniz.bilgi için adres : https://developer.okta.com/blog/2017/07/25/oidc-primer-part-1
                 new IdentityResource(){ Name="CountryAndCity", DisplayName="Country and City",Description="Kullanıcının ülke ve şehir bilgisi", UserClaims= new [] {"country","city"}},//ülke ve şehir bilgisini tutuyoruz ve istediğimiz clientlere vereceğiz.Custom bilgiler ekliyoruz
@@ -112,7 +113,12 @@ namespace UdemyIdentityServer.AuthServer
                    AllowedGrantTypes= GrantTypes.Hybrid,//code id_token kullanıdığımız için hybrid kullanıyoruz.
                    RedirectUris=new  List<string>{ "https://localhost:5006/signin-oidc" },//token alma işlemini gerçekleştiren URL dir.Authorize endpoint den token bu adrese yönlenecek.
                    PostLogoutRedirectUris=new List<string>{ "https://localhost:5006/signout-callback-oidc" },//identity serverden logout işlemi olduğunda bu adrese yönlenecek.
-                   AllowedScopes = {IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile, "api1.read",IdentityServerConstants.StandardScopes.OfflineAccess,"CountryAndCity","Roles"},//identityResource den yetkileri alıyoruz.OfflineAccess startup tarafında tanımladık.
+                   AllowedScopes = { //identityResource den yetkileri alıyoruz.OfflineAccess startup tarafında tanımladık. User bilgilerini artık token içinde tanımladık.
+                         IdentityServerConstants.StandardScopes.Email, 
+                         IdentityServerConstants.StandardScopes.OpenId, 
+                         IdentityServerConstants.StandardScopes.Profile, "api1.read",
+                         IdentityServerConstants.StandardScopes.OfflineAccess,"CountryAndCity","Roles"
+                     },
                    AccessTokenLifetime=2*60*60,//access token ömrü tanımlıyoruz.Biz 2 saatlik yaptık.Defaultda bunu saniye bazında yapıyoruz.Defaultu 3600 sn yani 1 saat. 2*60*60=saat*dakika*saniye ikinci yol (int) (DateTime.Now.AddDays(60)-DateTime.Now).TotalSeconds
                    AllowOfflineAccess=true,//refresh token oluşturma komutu
                    RefreshTokenUsage=TokenUsage.ReUse,//refresh token birdende fazla kulllanılabilsin.Eğer biz OneTimOnly seçersek bir kez refresh token kullanılır. Eğer ReUse seçersek sürekli kendisini yenileme özelliği olmuş olur.
