@@ -167,6 +167,135 @@ issued=oluşturulma tarihi
 -- Kontrol için. boş bir view oluştur User için mesela.
 -- localhost:5011/home/user yaptığında eğer login olmamışsan seni login sayfasına yani identity sayfasına yönlendirecektir.
 
+*********************CUSTOM MERKEZİ ÜYELİK İÇİN SQL SERVER YEDEĞİ*********
+USE [master]
+GO
+/****** Object:  Database [IdentityServer]    Script Date: 05/11/2022 14:35:02 ******/
+CREATE DATABASE [IdentityServer]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'IdentityServer', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\DATA\IdentityServer.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'IdentityServer_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\DATA\IdentityServer_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+GO
+ALTER DATABASE [IdentityServer] SET COMPATIBILITY_LEVEL = 140
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [IdentityServer].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [IdentityServer] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [IdentityServer] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [IdentityServer] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [IdentityServer] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [IdentityServer] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [IdentityServer] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [IdentityServer] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [IdentityServer] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [IdentityServer] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [IdentityServer] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [IdentityServer] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [IdentityServer] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [IdentityServer] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [IdentityServer] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [IdentityServer] SET  ENABLE_BROKER 
+GO
+ALTER DATABASE [IdentityServer] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [IdentityServer] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [IdentityServer] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [IdentityServer] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [IdentityServer] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [IdentityServer] SET READ_COMMITTED_SNAPSHOT ON 
+GO
+ALTER DATABASE [IdentityServer] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [IdentityServer] SET RECOVERY FULL 
+GO
+ALTER DATABASE [IdentityServer] SET  MULTI_USER 
+GO
+ALTER DATABASE [IdentityServer] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [IdentityServer] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [IdentityServer] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [IdentityServer] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [IdentityServer] SET DELAYED_DURABILITY = DISABLED 
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'IdentityServer', N'ON'
+GO
+ALTER DATABASE [IdentityServer] SET QUERY_STORE = OFF
+GO
+USE [IdentityServer]
+GO
+/****** Object:  Table [dbo].[__EFMigrationsHistory]    Script Date: 05/11/2022 14:35:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[__EFMigrationsHistory](
+	[MigrationId] [nvarchar](150) NOT NULL,
+	[ProductVersion] [nvarchar](32) NOT NULL,
+ CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY CLUSTERED 
+(
+	[MigrationId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[CustomUsers]    Script Date: 05/11/2022 14:35:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[CustomUsers](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[UserName] [nvarchar](max) NULL,
+	[Email] [nvarchar](max) NULL,
+	[Password] [nvarchar](max) NULL,
+	[City] [nvarchar](max) NULL,
+ CONSTRAINT [PK_CustomUsers] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20221103195630_Initial', N'3.1.30')
+GO
+SET IDENTITY_INSERT [dbo].[CustomUsers] ON 
+GO
+INSERT [dbo].[CustomUsers] ([Id], [UserName], [Email], [Password], [City]) VALUES (1, N'caran', N'cuneytaran@gmail.com', N'12345', N'İstanbul')
+GO
+INSERT [dbo].[CustomUsers] ([Id], [UserName], [Email], [Password], [City]) VALUES (2, N'caran2', N'mehmetaran@gmail.com', N'12345', N'Konya')
+GO
+INSERT [dbo].[CustomUsers] ([Id], [UserName], [Email], [Password], [City]) VALUES (3, N'caran3', N'cemilaran@gmail.com', N'12345', N'İzmir')
+GO
+SET IDENTITY_INSERT [dbo].[CustomUsers] OFF
+GO
+USE [master]
+GO
+ALTER DATABASE [IdentityServer] SET  READ_WRITE 
+GO
 
 **************************************************************************
 POSTMAN YEDEĞİ = IdentityServer.postman_collection.json
