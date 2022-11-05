@@ -15,6 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UdemyIdentityServer.API2", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A5DFC682-C191-49C7-9E77-3A3497EF61A6}"
 	ProjectSection(SolutionItems) = preProject
+		UdemyIdentityServer.Client1\IdentitiyServerSQL.bak = UdemyIdentityServer.Client1\IdentitiyServerSQL.bak
 		IdentityServer.postman_collection.json = IdentityServer.postman_collection.json
 		Ports.txt = Ports.txt
 	EndProjectSection
