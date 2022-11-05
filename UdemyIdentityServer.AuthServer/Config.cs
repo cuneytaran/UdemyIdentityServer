@@ -114,8 +114,8 @@ namespace UdemyIdentityServer.AuthServer
                    RedirectUris=new  List<string>{ "https://localhost:5006/signin-oidc" },//token alma işlemini gerçekleştiren URL dir.Authorize endpoint den token bu adrese yönlenecek.
                    PostLogoutRedirectUris=new List<string>{ "https://localhost:5006/signout-callback-oidc" },//identity serverden logout işlemi olduğunda bu adrese yönlenecek.
                    AllowedScopes = { //identityResource den yetkileri alıyoruz.OfflineAccess startup tarafında tanımladık. User bilgilerini artık token içinde tanımladık.
-                         IdentityServerConstants.StandardScopes.Email, 
-                         IdentityServerConstants.StandardScopes.OpenId, 
+                         IdentityServerConstants.StandardScopes.Email,
+                         IdentityServerConstants.StandardScopes.OpenId,
                          IdentityServerConstants.StandardScopes.Profile, "api1.read",
                          IdentityServerConstants.StandardScopes.OfflineAccess,"CountryAndCity","Roles"
                      },
@@ -127,8 +127,7 @@ namespace UdemyIdentityServer.AuthServer
                    RequireConsent=false//bunu true yaparsan onay sayfasına otomatik yönlendirir.login olduktan sonra ikinci bir onay sayfasına yönlendirir.Yani token içinde hangi bilgiler olsun olmasın diye checkbox tikleyerek seçebiliyorsun.
                    //yukarıda 2 saatlik token ve 60 günlük refresh token hazırladık.
         },
-
-                  new Client()
+                 new Client()
                  {
                    ClientId = "Client2-Mvc",
                    RequirePkce=false,
@@ -145,7 +144,37 @@ namespace UdemyIdentityServer.AuthServer
                    AbsoluteRefreshTokenLifetime=(int) (DateTime.Now.AddDays(60)-DateTime.Now).TotalSeconds,
 
                    RequireConsent=false
-        }
+        },
+                 new Client()//Angular projesi için
+                  {
+                     //YAPILAN TÜM DEĞİŞİKLİKLER MEMORY DE TUTULDUĞU İÇİN RESTART ATMAN GEREKİYOR. YOKSA GEÇERLİ OLMAZ DEĞİŞİKLİKLER
+                     ClientId="js-client",//bu sitenin id si gibi düşün.
+                     RequireClientSecret=false,//ClientSecrets kesinlikle verilmez.o yüzden kapattık. backend uygulamalarda açılır.
+                     AllowedGrantTypes=GrantTypes.Code,//Akışı tipi olarak Authorization Code  grant kullanıyoruz.Bu yüzden Code seçiyoruz.
+                     ClientName="Js Client (Angular)",//ismini veriyoruz
+                     AllowedScopes = { //token içinde neler token içinde gidecek bunu belirliyoruz.
+                         IdentityServerConstants.StandardScopes.Email, 
+                         IdentityServerConstants.StandardScopes.OpenId, 
+                         IdentityServerConstants.StandardScopes.Profile, "api1.read",
+                         IdentityServerConstants.StandardScopes.OfflineAccess,"CountryAndCity","Roles"},
+                     //bir angular uygulaması default olarak 4200 porttan ayağa kalkar
+                     RedirectUris={"http://localhost:4200/callback"},//login olunca hangi adrese yönlensin
+                     AllowedCorsOrigins={"http://localhost:4200"},//Tüm cors izinlerini veriyoruz.
+                     PostLogoutRedirectUris={"http://localhost:4200" }//logout olunca gidecek adres
+                  },
+                 new Client()
+                 {
+                   ClientId = "Client1-ResourceOwner-Mvc",
+                   ClientName="Client 1 app  mvc uygulaması",
+                   ClientSecrets=new[] {new Secret("secret".Sha256())},
+                   AllowedGrantTypes= GrantTypes.ResourceOwnerPassword,
+                   AllowedScopes = { IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile, "api1.read",IdentityServerConstants.StandardScopes.OfflineAccess,"CountryAndCity","Roles"},
+                   AccessTokenLifetime=2*60*60,
+                   AllowOfflineAccess=true,
+                   RefreshTokenUsage=TokenUsage.ReUse,
+                   RefreshTokenExpiration=TokenExpiration.Absolute,
+                   AbsoluteRefreshTokenLifetime=(int) (DateTime.Now.AddDays(60)-DateTime.Now).TotalSeconds,
+        },
     };
         }
     }
